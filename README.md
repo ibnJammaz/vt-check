@@ -11,7 +11,7 @@ usage: vt-check.py -l <PATH_to_txt_file_containing_IoCs> [-h]
 check hashes in VT using VT API
 
 required:
-  -l <PATH>, --list <PATH>  path to .txt file hashs list
+  -l <PATH>, --list <PATH>  path to .txt file IoCs list
 
 optional:
   -h, --help                show this help message and exit
