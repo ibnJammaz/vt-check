@@ -125,7 +125,7 @@ if __name__ == "__main__":
     print(logo)
     try:
         if API_KEY == "<add_your_api_here>":
-            print(r'''add you VT API in line 4 in .py file: API_KEY = "<add_yout_api_here>"''')
+            print(r'''add you VT API in line 14 in .py file: API_KEY = "<add_yout_api_here>"''')
         else:
             main()
 
