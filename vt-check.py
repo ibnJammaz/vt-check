@@ -11,8 +11,8 @@ import requests
 import time
 import ipaddress
 
-API_KEY = "<add_your_api_here>"
-headers = {"Content-Type": "application/json", "x-apikey": API_KEY}
+api_kay = "<add_your_api_here>"
+headers = {"Content-Type": "application/json", "x-apikey": api_kay}
 
 url = ""
 vt_hash_link = "https://www.virustotal.com/api/v3/files/"
@@ -43,26 +43,25 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def identify_ioc(IoC):
+def identify_ioc(ioc):
     try:
-        ipaddress.ip_address(IoC)
+        ipaddress.ip_address(ioc)
         return "is_ip"
     except ValueError:
         pass
-    if len(IoC) == 32 or len(IoC) == 64 or len(IoC) == 40:
-        if "." in IoC:
+    if len(ioc) == 32 or len(ioc) == 64 or len(ioc) == 40:
+        if "." in ioc:
             return "is_url"
         return "is_hash"
-    elif IoC.startswith("http"):
+    elif ioc.startswith("http"):
         return "is_url"
     else:
-        print(f"error in identifying IOC: {IoC}")
+        print(f"error in identifying IOC: {ioc}")
 
 
-def VT_ckeck(IoC):
-    for i in range(len(IoC)):
-        ioc_type = identify_ioc(IoC[i])
-        # print(ioc_type)
+def VT_ckeck(ioc):
+    for i in range(len(ioc)):
+        ioc_type = identify_ioc(ioc[i])
         if ioc_type == "is_ip":
             url = vt_ip_link
         elif ioc_type == "is_hash":
@@ -71,19 +70,19 @@ def VT_ckeck(IoC):
             url = vt_url_link
 
         try:
-            url = f"{url}{IoC[i]}"
+            url = f"{url}{ioc[i]}"
             response = requests.get(url, headers=headers)
         except Exception:
-            print(f"Can't send a request to: {url}{IoC[i]}")
+            print(f"Can't send a request to: {url}{ioc[i]}")
 
         decodedResponse = response.json()
         if not response.ok:
             if "not found" in decodedResponse["error"]["message"]:
-                print(f"{IoC[i]} NOT found")
+                print(f"{ioc[i]} NOT found")
                 continue
         else:
             print(
-                f"{IoC[i]} flaged as malicious in: {decodedResponse["data"]["attributes"]["last_analysis_stats"]["malicious"]} Vendors"
+                f"{ioc[i]} flaged as malicious in: {decodedResponse["data"]["attributes"]["last_analysis_stats"]["malicious"]} Vendors"
             )
         time.sleep(15)
 
@@ -93,19 +92,19 @@ def main():
 
     try:
         with open(args.list) as f:
-            IoC = f.read().splitlines()
+            ioc = f.read().splitlines()
     except Exception:
         print(f"Error: failed to open {args.list}", file=sys.stderr)
         sys.exit(1)
 
-    VT_ckeck(IoC)
+    VT_ckeck(ioc)
 
 
 if __name__ == "__main__":
     try:
-        if API_KEY == "<add_your_api_here>":
+        if api_kay == "<add_your_api_here>":
             print(
-                r'''add you VT API in line 14 in .py file: API_KEY = "<add_yout_api_here>"'''
+                r'''add you VT API in line 14 in .py file: api_kay = "<add_yout_api_here>"'''
             )
         else:
             main()
