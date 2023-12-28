@@ -18,5 +18,5 @@ optional:
 ```
 
 ## Requirements
-
+pip install -r requirements.txt
 Python 3.6 or later
