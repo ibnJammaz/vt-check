@@ -73,7 +73,7 @@ def VT_ckeck(ioc):
             url = f"{url}{ioc[i]}"
             response = requests.get(url, headers=headers)
         except Exception:
-            print(f"Can't send a request to: {url}{ioc[i]}")
+            print(f"Can't send a request to: {url}")
 
         decodedResponse = response.json()
         if not response.ok:
