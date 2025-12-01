@@ -53,10 +53,8 @@ def identify_ioc(ioc):
         if "." in ioc:
             return "is_url"
         return "is_hash"
-    elif ioc.startswith("http"):
-        return "is_url"
     else:
-        print(f"error in identifying IOC: {ioc}")
+        return "is_url"
 
 
 def VT_ckeck(ioc):
@@ -111,3 +109,4 @@ if __name__ == "__main__":
 
     except KeyboardInterrupt:
         sys.exit(1)
+
